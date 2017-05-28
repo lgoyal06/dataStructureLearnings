@@ -1,4 +1,4 @@
-package com.lalit.ds.java;
+package com.lalit.ds.java.stack.api;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.lalit.ds.java;
+package com.lalit.ds.java.queue.api;
 
 import java.util.ArrayList;
 

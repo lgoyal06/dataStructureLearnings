@@ -1,15 +1,15 @@
-package com.lalit.ds.java;
+package com.lalit.ds.java.queue.api;
 
 public class QueueImplementationViaLinkedList {
 
-	Node2 queue;
+	Node3 queue;
 
-	public boolean enqueue(Node2 n) {
+	public boolean enqueue(Node3 n) {
 		if (queue == null) {
 			queue = n;
 			return true;
 		} else {
-			Node2 tem = queue;
+			Node3 tem = queue;
 			while (tem.next != null)
 				tem = tem.next;
 			tem.next = n;
@@ -29,11 +29,11 @@ public class QueueImplementationViaLinkedList {
 
 	public static void main(String... s) {
 		QueueImplementationViaLinkedList queue = new QueueImplementationViaLinkedList();
-		queue.enqueue(new Node2(1, null));
-		queue.enqueue(new Node2(2, null));
-		queue.enqueue(new Node2(3, null));
-		queue.enqueue(new Node2(6, null));
-		queue.enqueue(new Node2(9, null));
+		queue.enqueue(new Node3(1, null));
+		queue.enqueue(new Node3(2, null));
+		queue.enqueue(new Node3(3, null));
+		queue.enqueue(new Node3(6, null));
+		queue.enqueue(new Node3(9, null));
 		queue.deqeue();
 		queue.deqeue();
 		queue.deqeue();
@@ -42,11 +42,11 @@ public class QueueImplementationViaLinkedList {
 	}
 }
 
-class Node2 {
+class Node3 {
 	int x;
-	Node2 next;
+	Node3 next;
 
-	public Node2(int x, Node2 n1) {
+	public Node3(int x, Node3 n1) {
 		this.x = x;
 		this.next = n1;
 	}
