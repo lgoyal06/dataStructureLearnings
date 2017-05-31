@@ -4,15 +4,15 @@ public class AVLBSTree<T extends Object> {
 
 	private BinaryTreeNode<T> bst;
 
-	public boolean insertion(T n) {
+	public boolean insertion(T value) {
 		if (bst == null) {
 			BinaryTreeNode<T> rootNode = new BinaryTreeNode<>();
-			rootNode.value = n;
+			rootNode.value = value;
 			rootNode.height = 1;
 			this.bst = rootNode;
 			return true;
 		}
-		return recursiveFunctionForInsertion(bst, n);
+		return recursiveFunctionForInsertion(bst, value);
 	}
 
 	private int compareValue(T value1, T value2) {
@@ -27,7 +27,7 @@ public class AVLBSTree<T extends Object> {
 		return 0;
 	}
 
-	public boolean recursiveFunctionForInsertion(BinaryTreeNode<T> currentNode, T value) {
+	private boolean recursiveFunctionForInsertion(BinaryTreeNode<T> currentNode, T value) {
 
 		BinaryTreeNode<T> newNode = new BinaryTreeNode<>();
 		if (compareValue(currentNode.value, value) == 1) {
@@ -37,11 +37,12 @@ public class AVLBSTree<T extends Object> {
 		} else {
 			return false;
 		}
-		currentNode.height = Math.max((currentNode.nextLeft == null ? 0 : currentNode.nextLeft.height),
-				(currentNode.nextRight == null ? 0 : currentNode.nextRight.height)) + 1;
-		System.out.println(Math.abs((currentNode.nextLeft == null ? 0 : currentNode.nextLeft.height)
-				- (currentNode.nextRight == null ? 0 : currentNode.nextRight.height)) > 1
-						? "InBalance in AVL Tree Detected. I am calling Refactoring" : "");
+		currentNode.height = Math.max((currentNode.nextLeft == null ? 1 : currentNode.nextLeft.height),
+				(currentNode.nextRight == null ? 1 : currentNode.nextRight.height)) + 1;
+		if (Math.abs((currentNode.nextLeft == null ? 1 : currentNode.nextLeft.height)
+				- (currentNode.nextRight == null ? 1 : currentNode.nextRight.height)) > 1) {
+			restructure(currentNode);
+		}
 		return true;
 	}
 
@@ -53,11 +54,16 @@ public class AVLBSTree<T extends Object> {
 		} else {
 			recursiveFunctionForInsertion(currentNode.nextRight, value);
 		}
-		currentNode.height = Math.max((currentNode.nextLeft == null ? 0 : currentNode.nextLeft.height),
-				(currentNode.nextRight == null ? 0 : currentNode.nextRight.height)) + 1;
-		System.out.println(Math.abs((currentNode.nextLeft == null ? 0 : currentNode.nextLeft.height)
-				- (currentNode.nextRight == null ? 0 : currentNode.nextRight.height)) > 1
-						? "InBalance in AVL Tree Detected. I am calling Refactoring" : "");
+		currentNode.height = Math.max((currentNode.nextLeft == null ? 1 : currentNode.nextLeft.height),
+				(currentNode.nextRight == null ? 1 : currentNode.nextRight.height)) + 1;
+		if (Math.abs((currentNode.nextLeft == null ? 1 : currentNode.nextLeft.height)
+				- (currentNode.nextRight == null ? 1 : currentNode.nextRight.height)) > 1) {
+			restructure(currentNode);
+		}
+	}
+
+	private void restructure(BinaryTreeNode<T> subTree) {
+		inlineTraversing(subTree);
 	}
 
 	private void buildLeftSubTree(BinaryTreeNode<T> currentNode, T value, BinaryTreeNode<T> newNode) {
@@ -68,11 +74,21 @@ public class AVLBSTree<T extends Object> {
 		} else {
 			recursiveFunctionForInsertion(currentNode.nextLeft, value);
 		}
-		currentNode.height = Math.max((currentNode.nextLeft == null ? 0 : currentNode.nextLeft.height),
-				(currentNode.nextRight == null ? 0 : currentNode.nextRight.height)) + 1;
-		System.out.println(Math.abs((currentNode.nextLeft == null ? 0 : currentNode.nextLeft.height)
-				- (currentNode.nextRight == null ? 0 : currentNode.nextRight.height)) > 1
-						? "InBalance in AVL Tree Detected. I am calling Refactoring" : "");
+		currentNode.height = Math.max((currentNode.nextLeft == null ? 1 : currentNode.nextLeft.height),
+				(currentNode.nextRight == null ? 1 : currentNode.nextRight.height)) + 1;
+		if (Math.abs((currentNode.nextLeft == null ? 1 : currentNode.nextLeft.height)
+				- (currentNode.nextRight == null ? 1 : currentNode.nextRight.height)) > 1) {
+			restructure(currentNode);
+		}
+	}
+
+	private void inlineTraversing(BinaryTreeNode<T> n) {
+
+		if (n != null) {
+			inlineTraversing(n.nextLeft);
+			System.out.println(n.value);
+			inlineTraversing(n.nextRight);
+		}
 	}
 
 	private class BinaryTreeNode<E> {
@@ -81,19 +97,23 @@ public class AVLBSTree<T extends Object> {
 		private BinaryTreeNode<E> nextLeft;
 		private BinaryTreeNode<E> nextRight;
 		private int height;
+		@SuppressWarnings("unused")
+		private int inOrderTraverse;
 
 	}
 
 	public static void main(String... s) {
 
 		AVLBSTree<Integer> tree = new AVLBSTree<Integer>();
-		tree.insertion(8);
-		tree.insertion(2);
-		tree.insertion(4);
-		tree.insertion(1);
-		tree.insertion(7);
-		tree.insertion(40);
-		tree.insertion(42);
+		tree.insertion(44);
+		tree.insertion(17);
+		tree.insertion(78);
+		tree.insertion(32);
+		tree.insertion(50);
+		tree.insertion(88);
+		tree.insertion(48);
+		tree.insertion(62);
+		tree.insertion(54);
 		System.out.println();
 	}
 }
