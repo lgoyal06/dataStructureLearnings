@@ -1,12 +1,15 @@
 package com.lalit.ds.java.avl.tree;
 
-public class AVLBSTree<T extends Object> {
+import java.util.ArrayList;
+import java.util.List;
 
-	private BinaryTreeNode<T> bst;
+public class AVLTree<T extends Object> {
+
+	private Node<T> bst;
 
 	public boolean insertion(T value) {
 		if (bst == null) {
-			BinaryTreeNode<T> rootNode = new BinaryTreeNode<>();
+			Node<T> rootNode = new Node<>();
 			rootNode.value = value;
 			rootNode.height = 1;
 			this.bst = rootNode;
@@ -27,9 +30,9 @@ public class AVLBSTree<T extends Object> {
 		return 0;
 	}
 
-	private boolean recursiveFunctionForInsertion(BinaryTreeNode<T> currentNode, T value) {
+	private boolean recursiveFunctionForInsertion(Node<T> currentNode, T value) {
 
-		BinaryTreeNode<T> newNode = new BinaryTreeNode<>();
+		Node<T> newNode = new Node<>();
 		if (compareValue(currentNode.value, value) == 1) {
 			buildLeftSubTree(currentNode, value, newNode);
 		} else if (compareValue(currentNode.value, value) == -1) {
@@ -46,7 +49,7 @@ public class AVLBSTree<T extends Object> {
 		return true;
 	}
 
-	private void buildRightSubTree(BinaryTreeNode<T> currentNode, T value, BinaryTreeNode<T> newNode) {
+	private void buildRightSubTree(Node<T> currentNode, T value, Node<T> newNode) {
 		if (currentNode.nextRight == null) {
 			newNode.value = value;
 			newNode.height = 1;
@@ -62,11 +65,7 @@ public class AVLBSTree<T extends Object> {
 		}
 	}
 
-	private void restructure(BinaryTreeNode<T> subTree) {
-		inlineTraversing(subTree);
-	}
-
-	private void buildLeftSubTree(BinaryTreeNode<T> currentNode, T value, BinaryTreeNode<T> newNode) {
+	private void buildLeftSubTree(Node<T> currentNode, T value, Node<T> newNode) {
 		if (currentNode.nextLeft == null) {
 			newNode.value = value;
 			newNode.height = 1;
@@ -82,20 +81,66 @@ public class AVLBSTree<T extends Object> {
 		}
 	}
 
-	private void inlineTraversing(BinaryTreeNode<T> n) {
+	List<T> terminal = new ArrayList<>();
+	List<T> nonTerminal = new ArrayList<>();
 
-		if (n != null) {
-			inlineTraversing(n.nextLeft);
-			System.out.println(n.value);
-			inlineTraversing(n.nextRight);
+	// TODO build new tree
+	// TODO Complete on Dated 22nd at 4:15 am to 5:15 am
+	private void restructure(Node<T> subTree) {
+
+		inlineTraversing(subTree);
+		Node<T> rootNode = new Node<>();
+		rootNode.value = nonTerminal.get(1);
+
+		Node<T> nonTerminal_node_left = new Node<>();
+		nonTerminal_node_left.value = nonTerminal.get(0);
+
+		Node<T> nonTerminal_node_right = new Node<>();
+		nonTerminal_node_right.value = nonTerminal.get(2);
+
+		rootNode.nextLeft = nonTerminal_node_left;
+		rootNode.nextRight = nonTerminal_node_right;
+
+		if (compareValue(terminal.get(0), nonTerminal_node_left.value) < 0) {
+			Node<T> terminal_node_1 = new Node<>();
+			terminal_node_1.value = terminal.get(0);
+			nonTerminal_node_left.nextLeft = terminal_node_1;
+		}
+
+		if (compareValue(terminal.get(1), nonTerminal_node_left.value) > 0) {
+			if (compareValue(terminal.get(1), rootNode.value) < 0) {
+				Node<T> terminal_node_2 = new Node<>();
+				terminal_node_2.value = terminal.get(1);
+				nonTerminal_node_left.nextRight = terminal_node_2;
+			}
+		}
+
+		if (compareValue(terminal.get(2), nonTerminal_node_right.value) > 0) {
+			Node<T> terminal_node_3 = new Node<>();
+			terminal_node_3.value = terminal.get(2);
+			nonTerminal_node_right.nextLeft = terminal_node_3;
+		}
+		System.exit(0);
+	}
+
+	private void inlineTraversing(Node<T> tree) {
+
+		if (tree != null) {
+			inlineTraversing(tree.nextLeft);
+			if (tree.nextLeft == null && tree.nextRight == null) {
+				terminal.add(tree.value);
+			} else {
+				nonTerminal.add(tree.value);
+			}
+			inlineTraversing(tree.nextRight);
 		}
 	}
 
-	private class BinaryTreeNode<E> {
+	private class Node<E> {
 
 		private E value;
-		private BinaryTreeNode<E> nextLeft;
-		private BinaryTreeNode<E> nextRight;
+		private Node<E> nextLeft;
+		private Node<E> nextRight;
 		private int height;
 		@SuppressWarnings("unused")
 		private int inOrderTraverse;
@@ -104,7 +149,7 @@ public class AVLBSTree<T extends Object> {
 
 	public static void main(String... s) {
 
-		AVLBSTree<Integer> tree = new AVLBSTree<Integer>();
+		AVLTree<Integer> tree = new AVLTree<Integer>();
 		tree.insertion(44);
 		tree.insertion(17);
 		tree.insertion(78);
@@ -113,6 +158,7 @@ public class AVLBSTree<T extends Object> {
 		tree.insertion(88);
 		tree.insertion(48);
 		tree.insertion(62);
+		tree.insertion(64);
 		tree.insertion(54);
 		System.out.println();
 	}
