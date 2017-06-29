@@ -17,6 +17,12 @@ public class AVLTree<T extends Object> {
 		return recursiveFunctionForInsertion(bst, value);
 	}
 
+	// TODO add implementations
+	// Target 30th - 1st- 2nd July 2017
+	public boolean remove(T value) {
+		return true;
+	}
+
 	private int compareValue(T value1, T value2) {
 		if (value1 instanceof Integer && value2 instanceof Integer) {
 			if (((Integer) value1).intValue() < ((Integer) value2).intValue()) {
