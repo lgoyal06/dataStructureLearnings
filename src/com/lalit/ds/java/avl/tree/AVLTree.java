@@ -11,7 +11,6 @@ public class AVLTree<T extends Object> {
 		if (bst == null) {
 			Node<T> rootNode = new Node<>();
 			rootNode.value = value;
-			rootNode.height = 1;
 			this.bst = rootNode;
 			return true;
 		}
@@ -52,7 +51,6 @@ public class AVLTree<T extends Object> {
 	private void buildRightSubTree(Node<T> currentNode, T value, Node<T> newNode) {
 		if (currentNode.nextRight == null) {
 			newNode.value = value;
-			newNode.height = 1;
 			currentNode.nextRight = newNode;
 		} else {
 			recursiveFunctionForInsertion(currentNode.nextRight, value);
@@ -68,7 +66,6 @@ public class AVLTree<T extends Object> {
 	private void buildLeftSubTree(Node<T> currentNode, T value, Node<T> newNode) {
 		if (currentNode.nextLeft == null) {
 			newNode.value = value;
-			newNode.height = 1;
 			currentNode.nextLeft = newNode;
 		} else {
 			recursiveFunctionForInsertion(currentNode.nextLeft, value);
@@ -81,58 +78,56 @@ public class AVLTree<T extends Object> {
 		}
 	}
 
-	List<T> terminal = new ArrayList<>();
-	List<T> nonTerminal = new ArrayList<>();
-
-	// TODO build new tree
-	// TODO Complete on Dated 22nd at 4:15 am to 5:15 am
 	private void restructure(Node<T> subTree) {
 
-		inlineTraversing(subTree);
-		Node<T> rootNode = new Node<>();
-		rootNode.value = nonTerminal.get(1);
+		List<T> terminal = new ArrayList<>();
+		List<T> nonTerminal = new ArrayList<>();
+
+		inOrderTraversing(subTree, terminal, nonTerminal);
 
 		Node<T> nonTerminal_node_left = new Node<>();
-		nonTerminal_node_left.value = nonTerminal.get(0);
-
 		Node<T> nonTerminal_node_right = new Node<>();
+
+		subTree.value = nonTerminal.get(1);
+		nonTerminal_node_left.value = nonTerminal.get(0);
 		nonTerminal_node_right.value = nonTerminal.get(2);
+		subTree.nextLeft = nonTerminal_node_left;
+		subTree.nextRight = nonTerminal_node_right;
 
-		rootNode.nextLeft = nonTerminal_node_left;
-		rootNode.nextRight = nonTerminal_node_right;
+		int indexTraversedTerminal = 0;
 
-		if (compareValue(terminal.get(0), nonTerminal_node_left.value) < 0) {
-			Node<T> terminal_node_1 = new Node<>();
-			terminal_node_1.value = terminal.get(0);
-			nonTerminal_node_left.nextLeft = terminal_node_1;
-		}
-
-		if (compareValue(terminal.get(1), nonTerminal_node_left.value) > 0) {
-			if (compareValue(terminal.get(1), rootNode.value) < 0) {
-				Node<T> terminal_node_2 = new Node<>();
-				terminal_node_2.value = terminal.get(1);
-				nonTerminal_node_left.nextRight = terminal_node_2;
+		while (terminal.size() > indexTraversedTerminal) {
+			Node<T> current_terminal_node = new Node<>();
+			current_terminal_node.value = terminal.get(indexTraversedTerminal);
+			if (compareValue(current_terminal_node.value, subTree.value) < 0) {
+				if (compareValue(current_terminal_node.value, nonTerminal_node_left.value) < 0) {
+					nonTerminal_node_left.nextLeft = current_terminal_node;
+				} else {
+					nonTerminal_node_left.nextRight = current_terminal_node;
+				}
+			} else {
+				if (compareValue(current_terminal_node.value, nonTerminal_node_right.value) < 0) {
+					nonTerminal_node_right.nextLeft = current_terminal_node;
+				} else {
+					nonTerminal_node_right.nextRight = current_terminal_node;
+				}
 			}
+			++indexTraversedTerminal;
 		}
-
-		if (compareValue(terminal.get(2), nonTerminal_node_right.value) > 0) {
-			Node<T> terminal_node_3 = new Node<>();
-			terminal_node_3.value = terminal.get(2);
-			nonTerminal_node_right.nextLeft = terminal_node_3;
-		}
-		System.exit(0);
+		nonTerminal_node_right.height = 2;
+		nonTerminal_node_left.height = 2;
+		subTree.height = 3;
 	}
 
-	private void inlineTraversing(Node<T> tree) {
-
+	private void inOrderTraversing(Node<T> tree, List<T> terminalNode, List<T> nonTerminalNode) {
 		if (tree != null) {
-			inlineTraversing(tree.nextLeft);
+			inOrderTraversing(tree.nextLeft, terminalNode, nonTerminalNode);
 			if (tree.nextLeft == null && tree.nextRight == null) {
-				terminal.add(tree.value);
+				terminalNode.add(tree.value);
 			} else {
-				nonTerminal.add(tree.value);
+				nonTerminalNode.add(tree.value);
 			}
-			inlineTraversing(tree.nextRight);
+			inOrderTraversing(tree.nextRight, terminalNode, nonTerminalNode);
 		}
 	}
 
@@ -141,25 +136,25 @@ public class AVLTree<T extends Object> {
 		private E value;
 		private Node<E> nextLeft;
 		private Node<E> nextRight;
-		private int height;
+		private int height = 1;
 		@SuppressWarnings("unused")
 		private int inOrderTraverse;
 
 	}
+	//
+	// public static void main(String... s) {
+	//
+	// AVLTree<Integer> tree = new AVLTree<Integer>();
+	// tree.insertion(44);
+	// tree.insertion(17);
+	// tree.insertion(78);
+	// tree.insertion(32);
+	// tree.insertion(50);
+	// tree.insertion(88);
+	// tree.insertion(48);
+	// tree.insertion(62);
+	// tree.insertion(54);
+	// System.out.println();
+	// }
 
-	public static void main(String... s) {
-
-		AVLTree<Integer> tree = new AVLTree<Integer>();
-		tree.insertion(44);
-		tree.insertion(17);
-		tree.insertion(78);
-		tree.insertion(32);
-		tree.insertion(50);
-		tree.insertion(88);
-		tree.insertion(48);
-		tree.insertion(62);
-		tree.insertion(64);
-		tree.insertion(54);
-		System.out.println();
-	}
 }
