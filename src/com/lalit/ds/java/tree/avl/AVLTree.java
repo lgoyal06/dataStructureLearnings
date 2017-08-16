@@ -1,4 +1,4 @@
-package com.lalit.ds.java.avl.tree;
+package com.lalit.ds.java.tree.avl;
 
 import java.util.ArrayList;
 import java.util.List;
