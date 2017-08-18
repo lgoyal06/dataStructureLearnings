@@ -1,6 +1,6 @@
-package com.lalit.ds.java.bst;
+package com.lalit.ds.java.tree.bst;
 
-import com.lalit.ds.java.DoubleLinkedList;
+import com.lalit.ds.java.basic.DoubleLinkedList;
 
 public class BinarySearchTreeTraversingAlgorithm {
 

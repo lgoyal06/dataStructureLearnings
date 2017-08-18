@@ -1,4 +1,4 @@
-package com.lalit.ds.java;
+package com.lalit.ds.java.basic;
 
 public class DoubleLinkedList {
 

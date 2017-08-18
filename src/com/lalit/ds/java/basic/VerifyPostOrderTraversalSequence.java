@@ -1,4 +1,4 @@
-package com.lalit.ds.java;
+package com.lalit.ds.java.basic;
 
 /**
  * No. 06 - Post-order Traversal Sequences of Binary Search Trees Determine

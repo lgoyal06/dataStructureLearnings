@@ -1,4 +1,4 @@
-package com.lalit.ds.java.bst;
+package com.lalit.ds.java.tree.bst;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -6,7 +6,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
-import com.lalit.ds.java.Node1;
+import com.lalit.ds.java.basic.Node1;
 
 public class BinaryTreeValidator {
 

@@ -1,4 +1,4 @@
-package com.lalit.ds.java.bst;
+package com.lalit.ds.java.tree.bst;
 
 import java.util.LinkedList;
 import java.util.Queue;

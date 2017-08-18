@@ -1,4 +1,4 @@
-package com.lalit.ds.java;
+package com.lalit.ds.java.basic;
 
 import java.util.ArrayList;
 import java.util.List;
