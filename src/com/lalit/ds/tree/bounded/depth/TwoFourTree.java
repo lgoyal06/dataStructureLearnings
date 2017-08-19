@@ -16,6 +16,7 @@ public class TwoFourTree<T extends Comparable<T>> implements BasicTreeOperations
 	@SuppressWarnings("unchecked")
 	private BinaryApproximationSearch<T> binaryApproximationSearch = BinaryApproximationSearch.getInstance();
 
+	@Override
 	public boolean add(T value) {
 		if (rootNode == null) {
 			rootNode = new Node<T>();
@@ -161,5 +162,11 @@ public class TwoFourTree<T extends Comparable<T>> implements BasicTreeOperations
 		public int getTotalKeys() {
 			return totalKeys;
 		}
+	}
+
+	@Override
+	public boolean deleteKey(T value) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
