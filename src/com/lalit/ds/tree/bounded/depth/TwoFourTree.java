@@ -9,7 +9,7 @@ import java.util.List;
  * 
  * 
  */
-public class TwoFourTree<T extends Comparable<T>> {
+public class TwoFourTree<T extends Comparable<T>> implements BasicTreeOperations<T> {
 
 	private Node<T> rootNode;
 	private static final int MAX_KEY_ALLOWED = 3;
