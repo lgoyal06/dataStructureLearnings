@@ -40,46 +40,48 @@ public class TwoFourTree<T extends Comparable<T>> {
 		return false;
 	}
 
-	private Node<T> splitAndBuild(Node<T> rootNode, int nodeIndex) {
-		while (rootNode.getValues().size() > MAX_KEY_ALLOWED) {
-			int middleValueIndex = (MAX_KEY_ALLOWED / 2) + 1;
+	private Node<T> splitAndBuild(Node<T> currentNode, int index) {
+		while (currentNode.getValues().size() > MAX_KEY_ALLOWED) {
+			int middleKeyIndex = (MAX_KEY_ALLOWED / 2) + 1;
 
-			Node<T> newLeftChildNode = buildLeftNewChildNodes(rootNode, middleValueIndex);
-			Node<T> newRightChildNode = buildRightChildNode(rootNode, middleValueIndex);
+			Node<T> newLeftChildNode = buildLeftNewChildNodes(currentNode, middleKeyIndex);
+			Node<T> newRightChildNode = buildRightNewChildNode(currentNode, middleKeyIndex);
+			Node<T> updatedParentNode = rebuildParentNode(currentNode, index, middleKeyIndex, newLeftChildNode,
+					newRightChildNode);
 
-			if (rootNode.parentNode == null) {
-				Node<T> newParentNode = new Node<>();
-				newParentNode.setValues(rootNode.getValueAt(middleValueIndex));
-				newLeftChildNode.setParentNode(newParentNode);
-				newRightChildNode.setParentNode(newParentNode);
-				newParentNode.setChildNode(newLeftChildNode, 0);
-				newParentNode.setChildNode(newRightChildNode, 1);
-				rootNode = newParentNode;
-			} else {
-				Node<T> parentNode = rootNode.getParentNode();
-				parentNode.setValues(rootNode.getValueAt(middleValueIndex));
-				int totalChildren = parentNode.getChildren().size() - 1;
-				newLeftChildNode.setParentNode(parentNode);
-				newRightChildNode.setParentNode(parentNode);
-				/** TODO need to fix next 3 lines **/
-				parentNode.getChildren().remove(nodeIndex);
-				parentNode.setChildNode(newLeftChildNode, nodeIndex);
-				parentNode.setChildNode(newRightChildNode, nodeIndex + 1);
-				/****/
-				rootNode = parentNode;
-			}
-			// TODO Wrong code hardcoded to 0 change
-			rootNode = splitAndBuild(rootNode, 0);
-		}
-		// Loop until rootNode points to top most node in hierarcy
-		while (rootNode.getParentNode() != null) {
-			rootNode = rootNode.getParentNode();
+			currentNode = updatedParentNode;
+			if (currentNode.getParentNode() != null)
+				index = binaryApproximationSearch.getChildNodeIndex(currentNode.getParentNode().getValues(),
+						currentNode.getValueAt(0));
+			else
+				index = 0;
+			currentNode = splitAndBuild(currentNode, index);
 		}
 
-		return rootNode;
+		while (currentNode.getParentNode() != null) {
+			currentNode = currentNode.getParentNode();
+		}
+
+		return currentNode;
 	}
 
-	private Node<T> buildRightChildNode(Node<T> rootNode, int middleValueIndex) {
+	private Node<T> rebuildParentNode(Node<T> rootNode, int nodeIndex, int middleValueIndex, Node<T> newLeftChildNode,
+			Node<T> newRightChildNode) {
+		Node<T> parentNode = rootNode.parentNode == null ? new Node<>() : rootNode.getParentNode();
+		parentNode.setValues(rootNode.getValueAt(middleValueIndex));
+
+		newLeftChildNode.setParentNode(parentNode);
+		newRightChildNode.setParentNode(parentNode);
+
+		if (parentNode.getChildren().size() > 0) {
+			parentNode.getChildren().remove(nodeIndex);
+		}
+		parentNode.setChildNode(newLeftChildNode, nodeIndex);
+		parentNode.setChildNode(newRightChildNode, nodeIndex + 1);
+		return parentNode;
+	}
+
+	private Node<T> buildRightNewChildNode(Node<T> rootNode, int middleValueIndex) {
 		Node<T> newChildNode_2 = new Node<>();
 		for (int i = middleValueIndex + 1; i < rootNode.getValues().size(); ++i) {
 			newChildNode_2.setValues(rootNode.getValueAt(i));
@@ -113,7 +115,7 @@ public class TwoFourTree<T extends Comparable<T>> {
 
 	private class Node<T extends Comparable<T>> {
 
-		int totalKeys = 0;
+		private int totalKeys = 0;
 		private Node<T> parentNode;
 		private ArrayList<Node<T>> children = new ArrayList<Node<T>>();
 		private ArrayList<T> values = new ArrayList<T>();
