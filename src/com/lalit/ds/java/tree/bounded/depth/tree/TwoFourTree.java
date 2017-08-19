@@ -33,19 +33,19 @@ public class TwoFourTree<T extends Comparable<T>> {
 		} else {
 			currentNode.setValues(value);
 			if (currentNode.getTotalKeys() > MAX_KEY_ALLOWED) {
-				this.rootNode = splitAndBuild(currentNode, nodeIndex);
+				this.rootNode = splitAndRebuildTree(currentNode, nodeIndex);
 			}
 			return true;
 		}
 		return false;
 	}
 
-	private Node<T> splitAndBuild(Node<T> currentNode, int index) {
+	private Node<T> splitAndRebuildTree(Node<T> currentNode, int index) {
 		while (currentNode.getValues().size() > MAX_KEY_ALLOWED) {
 			int middleKeyIndex = (MAX_KEY_ALLOWED / 2) + 1;
 
-			Node<T> newLeftChildNode = buildLeftNewChildNodes(currentNode, middleKeyIndex);
-			Node<T> newRightChildNode = buildRightNewChildNode(currentNode, middleKeyIndex);
+			Node<T> newLeftChildNode = buildNewLeftChildNodes(currentNode, middleKeyIndex);
+			Node<T> newRightChildNode = buildNewRightChildNode(currentNode, middleKeyIndex);
 			Node<T> updatedParentNode = rebuildParentNode(currentNode, index, middleKeyIndex, newLeftChildNode,
 					newRightChildNode);
 
@@ -55,7 +55,7 @@ public class TwoFourTree<T extends Comparable<T>> {
 						currentNode.getValueAt(0));
 			else
 				index = 0;
-			currentNode = splitAndBuild(currentNode, index);
+			currentNode = splitAndRebuildTree(currentNode, index);
 		}
 
 		while (currentNode.getParentNode() != null) {
@@ -81,7 +81,7 @@ public class TwoFourTree<T extends Comparable<T>> {
 		return parentNode;
 	}
 
-	private Node<T> buildRightNewChildNode(Node<T> rootNode, int middleValueIndex) {
+	private Node<T> buildNewRightChildNode(Node<T> rootNode, int middleValueIndex) {
 		Node<T> newChildNode_2 = new Node<>();
 		for (int i = middleValueIndex + 1; i < rootNode.getValues().size(); ++i) {
 			newChildNode_2.setValues(rootNode.getValueAt(i));
@@ -96,7 +96,7 @@ public class TwoFourTree<T extends Comparable<T>> {
 		return newChildNode_2;
 	}
 
-	private Node<T> buildLeftNewChildNodes(Node<T> rootNode, int middleValueIndex) {
+	private Node<T> buildNewLeftChildNodes(Node<T> rootNode, int middleValueIndex) {
 		Node<T> newChildNode_1 = new Node<>();
 
 		for (int i = 0; i < middleValueIndex; ++i) {
