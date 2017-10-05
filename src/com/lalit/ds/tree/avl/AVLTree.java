@@ -3,11 +3,13 @@ package com.lalit.ds.tree.avl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AVLTree<T extends Object> {
+import com.lalit.ds.tree.bounded.depth.BasicTreeOperations;
+
+public class AVLTree<T extends Object> implements BasicTreeOperations<T> {
 
 	private Node<T> bst;
 
-	public boolean insertion(T value) {
+	public boolean add(T value) {
 		if (bst == null) {
 			Node<T> rootNode = new Node<>();
 			rootNode.value = value;
@@ -15,12 +17,6 @@ public class AVLTree<T extends Object> {
 			return true;
 		}
 		return recursiveFunctionForInsertion(bst, value);
-	}
-
-	// TODO add implementations
-	// Target 30th - 1st- 2nd July 2017
-	public boolean remove(T value) {
-		return true;
 	}
 
 	private int compareValue(T value1, T value2) {
@@ -137,6 +133,12 @@ public class AVLTree<T extends Object> {
 		}
 	}
 
+	@Override
+	public boolean deleteKey(T value) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	private class Node<E> {
 
 		private E value;
@@ -147,20 +149,5 @@ public class AVLTree<T extends Object> {
 		private int inOrderTraverse;
 
 	}
-	//
-	// public static void main(String... s) {
-	//
-	// AVLTree<Integer> tree = new AVLTree<Integer>();
-	// tree.insertion(44);
-	// tree.insertion(17);
-	// tree.insertion(78);
-	// tree.insertion(32);
-	// tree.insertion(50);
-	// tree.insertion(88);
-	// tree.insertion(48);
-	// tree.insertion(62);
-	// tree.insertion(54);
-	// System.out.println();
-	// }
 
 }
